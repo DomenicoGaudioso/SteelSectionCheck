@@ -1,0 +1,4 @@
+## Avviare stremlit
+
+cd C:\Users\Domen\OneDrive\00_TOLS\GitHub\SteelSectionCheck\src
+py -m streamlit run runApp.py

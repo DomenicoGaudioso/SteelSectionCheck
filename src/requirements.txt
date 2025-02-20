@@ -33,6 +33,7 @@ concreteproperties
 ezdxf
 scikit-learn
 openpyxl
+cad_to_shapely
 
 
 

@@ -20,20 +20,25 @@ with st.sidebar:
    st.write("Surname: Gaudioso")
    st.write("📧 dome.gaudioso@gmail.com")
    st.markdown("📱 [LinkedIn]({'https://www.linkedin.com/in/domenico-gaudioso-529a28171/'})", unsafe_allow_html=True)
-   st.markdown("💻 [GitHub]({'https://github.com/DomenicoGaudioso'})", unsafe_allow_html=True)
+   #st.markdown("💻 [GitHub]({'https://github.com/DomenicoGaudioso'})", unsafe_allow_html=True)
 
    st.markdown("## About")
    # Link di Streamlit
-   st.markdown(f"[Streamlit]({'https://www.streamlit.io/'})", unsafe_allow_html=True)
+   #st.markdown(f"[Streamlit]({'https://www.streamlit.io/'})", unsafe_allow_html=True)
    # Link di SciPy
-   st.markdown(f"[Sectionproperty]({'https://sectionproperties.readthedocs.io/en/latest/index.html'})", unsafe_allow_html=True)
+   #st.markdown(f"[Sectionproperty]({'https://sectionproperties.readthedocs.io/en/latest/index.html'})", unsafe_allow_html=True)
 
 
 
 st.write('Please insert path folder conteinr dxf file section:')
-dirname = st.text_input('Path Folder', '\\')
 
+uploaded_files = st.file_uploader(
+    "Choose a dxf file", accept_multiple_files=True)
 
+for uploaded_file in uploaded_files:
+    st.write("filename:", uploaded_file.name)
+
+"""
 if dirname is not "\\":
     dirname = os.path.normpath(dirname)
     file = elenca_files_cartella(dirname, typeFile=".dxf")
@@ -41,9 +46,12 @@ if dirname is not "\\":
     angle = st.number_input('angle rotated', value=90)
     st.write('The current number is ', round(angle, 2))
     geometryList = importSection(file, rotate=angle)
+"""
 
 ## Calculate property
-geometryList, dictProp = calcPro(geometryList)
+angle = st.number_input('angle rotated', value=0.0)
+geometryList = importSection([uploaded_file], rotate=angle)
+geometryList, dictProp = calcPro(uploaded_file)
 
 ## PLOT SECTION
 st.markdown("## Cross Section Geometry")

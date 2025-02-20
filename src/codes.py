@@ -26,7 +26,7 @@ def importSection(dxfFile, rotate = 0):
     
     dictGeom = {}
     for idxf in dxfFile:
-        path = Path(idxf)
+        path = idxf #Path(idxf)
         geom = Geometry.from_dxf(path)
         geom = Geometry.rotate_section(geom, rotate, "center")
         geom.create_mesh(mesh_sizes=[1000])

@@ -68,7 +68,7 @@ def calcPro(dictGeom):
         wxx_pos, wxx_neg, wyy_pos, wyy_neg = section.get_z()
         phi = section.get_phi()
         j = section.get_j()
-        scx_c, scy_c = section.get_sc_p()
+        scx_c, scy_c = section.get_sc()
         ax_c, ay_c = section.get_as() #area di taglio
         
         dictionaryProp[ilist] = {"A": area,

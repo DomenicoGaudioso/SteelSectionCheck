@@ -5,8 +5,10 @@ from sectionproperties.pre import CompoundGeometry, Geometry, Material
 from tempfile import NamedTemporaryFile
 import os
 import matplotlib
+import tempfile
 import pandas as pd
 import matplotlib.pyplot as plt
+import zipfile
 
 
 st.set_page_config(layout="wide")
@@ -18,7 +20,7 @@ with st.sidebar:
    st.markdown("## Contacts")
    st.write("Name: Domenico")
    st.write("Surname: Gaudioso")
-   st.write("📧 dome.gaudioso@gmail.com")
+   st.write("📧 domenicogaudioso@outlook.it")
    st.markdown("📱 [LinkedIn]({'https://www.linkedin.com/in/domenico-gaudioso-529a28171/'})", unsafe_allow_html=True)
    #st.markdown("💻 [GitHub]({'https://github.com/DomenicoGaudioso'})", unsafe_allow_html=True)
 
@@ -32,26 +34,88 @@ with st.sidebar:
 
 st.write('Please insert path folder conteinr dxf file section:')
 
-uploaded_files = st.file_uploader(
-    "Choose a dxf file", accept_multiple_files=True)
+def trova_sottocartelle(cartella_principale):
+    """
+    Trova tutte le sottocartelle dentro la cartella principale e restituisce le loro path.
+    """
+    if not os.path.exists(cartella_principale):
+        print(f"❌ Errore: La cartella '{cartella_principale}' non esiste.")
+        return []
 
-for uploaded_file in uploaded_files:
-    st.write("filename:", uploaded_file.name)
+    sottocartelle = []
 
-"""
-if dirname is not "\\":
-    dirname = os.path.normpath(dirname)
-    file = elenca_files_cartella(dirname, typeFile=".dxf")
-    st.write(file)
+    for nome_cartella in os.listdir(cartella_principale):
+        percorso_cartella = os.path.join(cartella_principale, nome_cartella)
+        
+        if os.path.isdir(percorso_cartella):  # Verifica se è una cartella
+            sottocartelle.append(percorso_cartella)
+
+    return sottocartelle
+
+def list_files_in_zip(zip_file):
+    with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+        file_list = zip_ref.namelist()
+    return file_list
+
+#st.title("Analisi sezioni in c.a.")
+
+# Funzione per trovare sottocartelle
+
+
+# Funzione per estrarre ZIP
+def extract_zip(uploaded_file):
+    with zipfile.ZipFile(uploaded_file, "r") as zip_ref:
+        extract_path = "temp_extracted"
+        zip_ref.extractall(extract_path)
+    return extract_path
+
+# Interfaccia Streamlit
+#st.title("Analisi File ZIP e Generazione Report Word")
+
+uploaded_zip = st.file_uploader("Carica un file ZIP", type=["zip"])
+
+if uploaded_zip:
+    st.success("📂 File ZIP caricato con successo!")
+
+    # Estrarre il file ZIP
+    extract_path = extract_zip(uploaded_zip)
+    st.write(f"📂 File estratti in: `{extract_path}`")
+
+    # Trovare le sottocartelle
+    sottocartella1 = trova_sottocartelle(extract_path)
+    #sottocartella2 = trova_sottocartelle(sottocartella1[0])
+    #sottocartelle = trova_sottocartelle(sottocartella1)
+    st.write("📂 Sottocartelle trovate:", sottocartella1)
+
+
+    pathStar = sottocartella1[0]
+    #pathSec = sottocartelle
+
+    file = elenca_files_cartella(pathStar, typeFile=".dxf")
+    st.write("📂 dxf trovati:", file)
+
     angle = st.number_input('angle rotated', value=90)
     st.write('The current number is ', round(angle, 2))
+
+
+
     geometryList = importSection(file, rotate=angle)
-"""
+    geometryList, dictProp = calcPro(geometryList)
+    
+    # Puoi aggiungere qui la tua logica di elaborazione DXF
+
+    #except Exception as e:
+        #st.error(f"Errore nella lettura del file {uploaded_file.name}: {e}")
+
+    # Step 4: Rimuovi il file temporaneo
+    #os.remove(temp_path)
+    #st.write("🗑️ File temporaneo eliminato")
+
 
 ## Calculate property
-angle = st.number_input('angle rotated', value=0.0)
-geometryList = importSection([uploaded_file], rotate=angle)
-geometryList, dictProp = calcPro(uploaded_file)
+#angle = st.number_input('angle rotated', value=0.0)
+#geometryList = importSection([uploaded_file], rotate=angle)
+
 
 ## PLOT SECTION
 st.markdown("## Cross Section Geometry")

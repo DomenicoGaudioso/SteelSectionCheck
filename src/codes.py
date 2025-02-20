@@ -26,7 +26,7 @@ def importSection(dxfFile, rotate = 0):
     
     dictGeom = {}
     for idxf in dxfFile:
-        path = idxf #Path(idxf)
+        path = Path(idxf)
         geom = Geometry.from_dxf(path)
         geom = Geometry.rotate_section(geom, rotate, "center")
         geom.create_mesh(mesh_sizes=[1000])
@@ -68,12 +68,14 @@ def calcPro(dictGeom):
         wxx_pos, wxx_neg, wyy_pos, wyy_neg = section.get_z()
         phi = section.get_phi()
         j = section.get_j()
-        scx_c, scy_c = section.get_sc()
+        scx_c, scy_c = section.get_sc_p()
         ax_c, ay_c = section.get_as() #area di taglio
         
         dictionaryProp[ilist] = {"A": area,
                                  "xg": igx,
                                  "yg": igy,
+                                 "xsc": scx_c,
+                                 "ysc": scy_c,
                                  "Ixx": ixx_c,
                                  "Iyy": iyy_c,
                                  "Ixy": ixy_c,

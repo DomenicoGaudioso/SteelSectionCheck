@@ -9,6 +9,7 @@ import tempfile
 import pandas as pd
 import matplotlib.pyplot as plt
 import zipfile
+import shutil
 
 
 st.set_page_config(layout="wide")
@@ -135,6 +136,10 @@ st.pyplot(plotList[sectionPlot])
 st.markdown("## Property Setion")
 df = pd.DataFrame(dictProp)
 st.dataframe(df)
+
+# Step 5: Cancella la cartella temporanea
+shutil.rmtree(pathStar)
+st.write("🗑️ Cartella temporanea eliminata")
 
 """
 st.write('Insert the cds excel file')

@@ -94,7 +94,7 @@ if uploaded_zip:
     file = elenca_files_cartella(pathStar, typeFile=".dxf")
     st.write("📂 dxf trovati:", file)
 
-    angle = st.number_input('angle rotated', value=90)
+    angle = st.number_input('angle rotated', value=0.0)
     st.write('The current number is ', round(angle, 2))
 
 
@@ -136,6 +136,7 @@ st.markdown("## Property Setion")
 df = pd.DataFrame(dictProp)
 st.dataframe(df)
 
+"""
 st.write('Insert the cds excel file')
 uploaded_file = st.file_uploader("Choose an Excel file", type="xlsx")
 if uploaded_file is not None:
@@ -182,3 +183,4 @@ fig, axs = plt.subplots(1, 1, figsize=(9, 3), sharey=True)
 tension[toggle1][toggle2].plot_stress(stress=toggle3, ax=axs, fmt="{x:.2f}")
 st.pyplot(fig)
 
+"""

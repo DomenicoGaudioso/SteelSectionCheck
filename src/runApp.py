@@ -13,23 +13,10 @@ import shutil
 
 
 st.set_page_config(layout="wide")
-
-with st.sidebar:
-   st.title('section check')
-
-   # Utilizza st.markdown per inserire i link
-   st.markdown("## Contacts")
-   st.write("Name: Domenico")
-   st.write("Surname: Gaudioso")
-   st.write("📧 domenicogaudioso@outlook.it")
-   st.markdown("📱 [LinkedIn]({'https://www.linkedin.com/in/domenico-gaudioso-529a28171/'})", unsafe_allow_html=True)
-   #st.markdown("💻 [GitHub]({'https://github.com/DomenicoGaudioso'})", unsafe_allow_html=True)
-
-   st.markdown("## About")
-   # Link di Streamlit
-   #st.markdown(f"[Streamlit]({'https://www.streamlit.io/'})", unsafe_allow_html=True)
-   # Link di SciPy
-   #st.markdown(f"[Sectionproperty]({'https://sectionproperties.readthedocs.io/en/latest/index.html'})", unsafe_allow_html=True)
+try:
+    shutil.rmtree("temp_extracted")
+except:
+    print("")
 
 
 
@@ -138,6 +125,7 @@ df = pd.DataFrame(dictProp)
 st.dataframe(df)
 
 # Step 5: Cancella la cartella temporanea
+
 shutil.rmtree(pathStar)
 st.write("🗑️ Cartella temporanea eliminata")
 

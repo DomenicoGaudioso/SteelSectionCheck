@@ -67,8 +67,9 @@ def calcPro(dictGeom):
         ixx_c, iyy_c, ixy_c = section.get_ic()
         wxx_pos, wxx_neg, wyy_pos, wyy_neg = section.get_z()
         phi = section.get_phi()
-        j = section.get_j()
+        J = section.get_j()
         scx_c, scy_c = section.get_sc()
+        Iw = section.get_gamma() # warping costant
         ax_c, ay_c = section.get_as() #area di taglio
         
         dictionaryProp[ilist] = {"A": area,
@@ -79,14 +80,14 @@ def calcPro(dictGeom):
                                  "Ixx": ixx_c,
                                  "Iyy": iyy_c,
                                  "Ixy": ixy_c,
+                                 "J": J,
+                                 "Iw": Iw,
+                                 "Avx":  ax_c,
+                                 "Avy": ay_c,
                                  "Wx+": wxx_pos,
                                  "Wx-": wxx_neg,
                                  "Wy+": wyy_pos,
                                  "Wy-": wyy_neg,                                    
-                                 "c_torsion": j,
-                                 "Avx":  ax_c,
-                                 "Avy": ay_c,
-                                 
                                 }
         
     

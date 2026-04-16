@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SteelSectionCheck - Documentazione Tecnica</title>
+    <style>
+        :root {
+            --primary: #1a3a5c;
+            --accent: #2980b9;
+            --accent2: #27ae60;
+            --danger: #e74c3c;
+            --warn: #f39c12;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --border: #dee2e6;
+            --text: #212529;
+            --text-light: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #1a3a5c 0%, #2c5f8a 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: var(--bg);
+            transform: skewY(-3deg);
+        }
+        
+        .hero h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .hero .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin: 5px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .toc {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        
+        .toc h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .toc ul {
+            list-style: none;
+            columns: 2;
+        }
+        
+        .toc li {
+            margin: 8px 0;
+        }
+        
+        .toc a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        section {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        
+        section h2 {
+            color: var(--primary);
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+        
+        section h3 {
+            color: var(--accent);
+            margin: 25px 0 15px 0;
+            font-size: 1.1em;
+        }
+        
+        .description {
+            font-size: 1.05em;
+            color: var(--text);
+            margin-bottom: 20px;
+        }
+        
+        ul.features {
+            list-style: none;
+            margin: 15px 0;
+        }
+        
+        ul.features li {
+            padding: 10px 0 10px 30px;
+            position: relative;
+        }
+        
+        ul.features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent2);
+            font-weight: bold;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+        
+        thead {
+            background: var(--primary);
+            color: white;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+        
+        th {
+            font-weight: 600;
+        }
+        
+        tbody tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        
+        tbody tr:hover {
+            background: #eef4fa;
+        }
+        
+        .formula-box {
+            background: #f4f6f9;
+            border-left: 4px solid var(--accent);
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Georgia', serif;
+            font-size: 1.1em;
+            color: var(--text);
+        }
+        
+        .formula-box .label {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.8em;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .badge-success {
+            background: #d5f4e6;
+            color: #1e7e34;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .badge-error {
+            background: #fadbd8;
+            color: #c0392b;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .card-info {
+            background: #e8f4f8;
+            border-left: 4px solid var(--accent);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .card-warning {
+            background: #fef5e7;
+            border-left: 4px solid var(--warn);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .card-success {
+            background: #e8f8f5;
+            border-left: 4px solid var(--accent2);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .svg-container {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .svg-container h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .svg-note {
+            font-size: 0.85em;
+            color: var(--text-light);
+            margin-top: 10px;
+        }
+        
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        footer p {
+            opacity: 0.8;
+            font-size: 0.9em;
+            margin: 10px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8em; }
+            .toc ul { columns: 1; }
+            section { padding: 20px; }
+            table { font-size: 0.85em; }
+            th, td { padding: 8px 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>SteelSectionCheck</h1>
+        <p class="subtitle">Applicazione web per l'analisi e la verifica di sezioni in acciaio</p>
+        <div>
+            <span class="badge">NTC 2018</span>
+            <span class="badge">Eurocodice 3</span>
+            <span class="badge">SIA 262</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="toc">
+            <h2>Indice dei Contenuti</h2>
+            <ul>
+                <li><a href="#panoramica">1. Panoramica Generale</a></li>
+                <li><a href="#funzionalita">2. Funzionalità Principali</a></li>
+                <li><a href="#input">3. Parametri di Input</a></li>
+                <li><a href="#output">4. Output Prodotti</a></li>
+                <li><a href="#normativa">5. Riferimenti Normativi</a></li>
+                <li><a href="#calcolo">6. Metodologia di Calcolo</a></li>
+                <li><a href="#esempio">7. Esempio di Utilizzo</a></li>
+                <li><a href="#diagramma">8. Diagramma della Sezione</a></li>
+            </ul>
+        </div>
+        
+        <section id="panoramica">
+            <h2>1. Panoramica Generale</h2>
+            <p class="description">
+                SteelSectionCheck è un'applicazione web per l'importazione, l'analisi geometrica e la verifica tensionale di sezioni in acciaio di forma qualsiasi. Lo strumento consente di importare sezioni dal formato DXF, calcolare automaticamente le proprietà geometriche tramite analisi agli elementi finiti, determinare lo stato tensionale sotto combinazioni di carico multiple e verificare la resistenza del materiale confrontando le tensioni von Mises con la tensione limite di progetto.
+            </p>
+            <p>
+                L'applicazione è progettata per ingegneri strutturali e professionisti tecnici che necessitano di verificare sezioni composte in acciaio secondo le normative vigenti.
+            </p>
+        </section>
+        
+        <section id="funzionalita">
+            <h2>2. Funzionalità Principali</h2>
+            <ul class="features">
+                <li><strong>Importazione sezioni</strong>: Caricamento di file in formato DXF con supporto per geometrie complesse e multi-componente</li>
+                <li><strong>Rotazione sezione</strong>: Possibilità di ruotare la sezione attorno al proprio centro con angolo definito dall'utente</li>
+                <li><strong>Analisi geometrica</strong>: Calcolo completo delle proprietà geometriche della sezione tramite metodo agli elementi finiti</li>
+                <li><strong>Calcolo tensioni</strong>: Determinazione dello stato tensionale sotto sollecitazioni combinate di forza assiale, taglio e momento</li>
+                <li><strong>Verifica resistente</strong>: Confronto delle tensioni von Mises con la tensione limite del materiale con indicazione visiva dell'esito</li>
+                <li><strong>Interfaccia web</strong>: Interfacciautente intuitiva per il caricamento dei file e la visualizzazione dei risultati</li>
+            </ul>
+        </section>
+        
+        <section id="input">
+            <h2>3. Parametri di Input</h2>
+            <p>I parametri di input sono suddivisi in categorie per una migliore organizzazione.</p>
+            
+            <h3>3.1 Input Geometrici</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parametro</th>
+                        <th>Tipo</th>
+                        <th>Descrizione</th>
+                        <th>Unità</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>File DXF</strong></td>
+                        <td>File</td>
+                        <td>File in formato DXF contenente la geometria della sezione</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rotazione</strong></td>
+                        <td>Float</td>
+                        <td>Angolo di rotazione della sezione attorno al centro geometrico</td>
+                        <td>° (gradi)</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>3.2 Proprietà del Materiale</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parametro</th>
+                        <th>Tipo</th>
+                        <th>Descrizione</th>
+                        <th>Unità</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>E (Modulo Elastico)</strong></td>
+                        <td>Float</td>
+                        <td>Modulo di Young del materiale</td>
+                        <td>MPa</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ν (Coefficiente di Poisson)</strong></td>
+                        <td>Float</td>
+                        <td>Rapporto di Poisson del materiale</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ρ (Densità)</strong></td>
+                        <td>Float</td>
+                        <td>Peso specifico del materiale</td>
+                        <td>t/mm³</td>
+                    </tr>
+                    <tr>
+                        <td><strong>f<sub>y</sub> (Tensione di snervamento)</strong></td>
+                        <td>Float</td>
+                        <td>Tensione caratteristica di snervamento del materiale</td>
+                        <td>MPa</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>3.3 Sollecitazioni</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parametro</th>
+                        <th>Tipo</th>
+                        <th>Descrizione</th>
+                        <th>Unità</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>N (Sforzo assiale)</strong></td>
+                        <td>Float</td>
+                        <td>Componente assiale della forza</td>
+                        <td>kN</td>
+                    </tr>
+                    <tr>
+                        <td><strong>V<sub>x</sub> (Taglio X)</strong></td>
+                        <td>Float</td>
+                        <td>Componente di taglio secondo l'asse x locale</td>
+                        <td>kN</td>
+                    </tr>
+                    <tr>
+                        <td><strong>V<sub>y</sub> (Taglio Y)</strong></td>
+                        <td>Float</td>
+                        <td>Componente di taglio secondo l'asse y locale</td>
+                        <td>kN</td>
+                    </tr>
+                    <tr>
+                        <td><strong>M<sub>xx</sub> (Momento X)</strong></td>
+                        <td>Float</td>
+                        <td>Momento flettente attorno all'asse x</td>
+                        <td>kN·m</td>
+                    </tr>
+                    <tr>
+                        <td><strong>M<sub>yy</sub> (Momento Y)</strong></td>
+                        <td>Float</td>
+                        <td>Momento flettente attorno all'asse y</td>
+                        <td>kN·m</td>
+                    </tr>
+                    <tr>
+                        <td><strong>M<sub>zz</sub> (Momento Torcente)</strong></td>
+                        <td>Float</td>
+                        <td>Momento torcente attorno all'asse z</td>
+                        <td>kN·m</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section id="output">
+            <h2>4. Output Prodotti</h2>
+            
+            <h3>4.1 Proprietà Geometriche</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Proprietà</th>
+                        <th>Descrizione</th>
+                        <th>Unità</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>A</strong></td>
+                        <td>Area della sezione</td>
+                        <td>mm²</td>
+                    </tr>
+                    <tr>
+                        <td><strong>I<sub>xx</sub>, I<sub>yy</sub></strong></td>
+                        <td>Momenti d'inerzia rispetto al centro geometrico</td>
+                        <td>mm⁴</td>
+                    </tr>
+                    <tr>
+                        <td><strong>I<sub>xy</sub></strong></td>
+                        <td>Prodotto d'inerzia</td>
+                        <td>mm⁴</td>
+                    </tr>
+                    <tr>
+                        <td><strong>J</strong></td>
+                        <td>Costante di torsione di Saint-Venant</td>
+                        <td>mm⁴</td>
+                    </tr>
+                    <tr>
+                        <td><strong>I<sub>w</sub></strong></td>
+                        <td>Costante di ingobbamento (warping constant)</td>
+                        <td>mm⁶</td>
+                    </tr>
+                    <tr>
+                        <td><strong>W<sub>x+</sub>, W<sub>x-</sub></strong></td>
+                        <td>Moduli di resistenza lungo x positivo e negativo</td>
+                        <td>mm³</td>
+                    </tr>
+                    <tr>
+                        <td><strong>W<sub>y+</sub>, W<sub>y-</sub></strong></td>
+                        <td>Moduli di resistenza lungo y positivo e negativo</td>
+                        <td>mm³</td>
+                    </tr>
+                    <tr>
+                        <td><strong>A<sub>vx</sub>, A<sub>vy</sub></strong></td>
+                        <td>Aree di taglio efficaci secondo x e y</td>
+                        <td>mm²</td>
+                    </tr>
+                    <tr>
+                        <td><strong>x<sub>g</sub>, y<sub>g</sub></strong></td>
+                        <td>Coordinate del centro geometrico</td>
+                        <td>mm</td>
+                    </tr>
+                    <tr>
+                        <td><strong>x<sub>sc</sub>, y<sub>sc</sub></strong></td>
+                        <td>Coordinate del centro di taglio</td>
+                        <td>mm</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>4.2 Risultati Tensionali</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tensione</th>
+                        <th>Descrizione</th>
+                        <th>Unità</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>σ<sub>n</sub></strong></td>
+                        <td>Tensione normale</td>
+                        <td>MPa</td>
+                    </tr>
+                    <tr>
+                        <td><strong>τ</strong></td>
+                        <td>Tensione tangenziale di taglio</td>
+                        <td>MPa</td>
+                    </tr>
+                    <tr>
+                        <td><strong>σ<sub>vm</sub></strong></td>
+                        <td>Tensione equivalente di Von Mises</td>
+                        <td>MPa</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>4.3 Esito della Verifica</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Indicatore</th>
+                        <th>Descrizione</th>
+                        <th>Significato</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="badge-success">✓ VERIFICATO</span></td>
+                        <td>Rapporto ≤ 1.0</td>
+                        <td>La sezione resiste alle sollecitazioni applicate</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge-error">✗ NON VERIFICATO</span></td>
+                        <td>Rapporto > 1.0</td>
+                        <td>La sezione NON resiste alle sollecitazioni applicate</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section id="normativa">
+            <h2>5. Riferimenti Normativi</h2>
+            <p>Le verifiche sono condotte secondo le seguenti normative nazionali ed europee:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Normativa</th>
+                        <th>Riferimento</th>
+                        <th>Applicazione</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>NTC 2018</strong></td>
+                        <td>D.M. 17/01/2018</td>
+                        <td>Norme tecniche per le costruzioni - Italia</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Eurocodice 3</strong></td>
+                        <td>EN 1993-1-1:2005</td>
+                        <td>Progettazione delle strutture in acciaio - Parte 1-1</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIA 262</strong></td>
+                        <td>Norma SIA 262:2020</td>
+                        <td>Costruzioni in acciaio - Svizzera</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="card-info">
+                <strong>Nota:</strong> I coefficienti parziali di sicurezza e i fattori di confidenza sono definiti dall'utente in base alla classe di attenzione e alla norma di riferimento selezionata.
+            </div>
+        </section>
+        
+        <section id="calcolo">
+            <h2>6. Metodologia di Calcolo</h2>
+            
+            <h3>6.1 Analisi Geometrica</h3>
+            <p>Le proprietà geometriche della sezione sono calcolate tramite un'analisi agli elementi finiti (FEM) basata sul metodo della sezione trasversale. La sezione viene discretizzata in un mesh di elementi triangolari e le proprietà integrate numericamente.</p>
+            
+            <h3>6.2 Calcolo Tensionale</h3>
+            <p>Lo stato tensionale in un punto della sezione è calcolato dalla sovrapposizione degli effetti:</p>
+            <ul>
+                <li>Tensione normale dovuta allo sforzo assiale N</li>
+                <li>Tensione normale dovuta ai momenti flettenti M<sub>xx</sub> e M<sub>yy</sub></li>
+                <li>Tensione tangenziale dovuta al taglio V<sub>x</sub> e V<sub>y</sub></li>
+                <li>Tensione tangenziale dovuta al momento torcente M<sub>zz</sub></li>
+            </ul>
+            
+            <h3>6.3 Tensione Equivalente di Von Mises</h3>
+            <div class="formula-box">
+                <div class="label">Formula di Von Mises</div>
+                σ<sub>vm</sub> = √(σ<sub>11</sub>² - σ<sub>11</sub>σ<sub>22</sub> + σ<sub>22</sub>² + 3τ<sub>12</sub>²)
+            </div>
+            
+            <h3>6.4 Criterio di Verifica</h3>
+            <div class="formula-box">
+                <div class="label">Condizione di resistenza</div>
+                σ<sub>vm</sub> ≤ f<sub>yd</sub> = f<sub>y</sub> / γ<sub>M</sub>
+            </div>
+            <p>dove f<sub>yd</sub> è la tensione di progetto del materiale e γ<sub>M</sub> è il coefficiente parziale di sicurezza.</p>
+        </section>
+        
+        <section id="esempio">
+            <h2>7. Esempio di Utilizzo</h2>
+            <p>Di seguito un esempio pratico di utilizzo dell'applicazione.</p>
+            
+            <h3>7.1 Dati di Input</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parametro</th>
+                        <th>Valore</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>File sezione</td>
+                        <td>5C2.dxf</td>
+                    </tr>
+                    <tr>
+                        <td>Rotazione</td>
+                        <td>0°</td>
+                    </tr>
+                    <tr>
+                        <td>Modulo elastico E</td>
+                        <td>210.000 MPa</td>
+                    </tr>
+                    <tr>
+                        <td>Tensione snervamento f<sub>y</sub></td>
+                        <td>275 MPa</td>
+                    </tr>
+                    <tr>
+                        <td>Sforzo assiale N</td>
+                        <td>50 kN</td>
+                    </tr>
+                    <tr>
+                        <td>Taglio V<sub>x</sub></td>
+                        <td>10 kN</td>
+                    </tr>
+                    <tr>
+                        <td>Taglio V<sub>y</sub></td>
+                        <td>5 kN</td>
+                    </tr>
+                    <tr>
+                        <td>Momento M<sub>xx</sub></td>
+                        <td>-5 kN·m</td>
+                    </tr>
+                    <tr>
+                        <td>Momento M<sub>yy</sub></td>
+                        <td>2.5 kN·m</td>
+                    </tr>
+                    <tr>
+                        <td>Momento torcente M<sub>zz</sub></td>
+                        <td>0.5 kN·m</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>7.2 Risultati Ottenuti</h3>
+            <div class="card-success">
+                <strong>✓ VERIFICATO</strong> — Il rapporto σ<sub>vm</sub>/f<sub>yd</sub> = 0.85 indica che la sezione è verificata.
+            </div>
+        </section>
+        
+        <section id="diagramma">
+            <h2>8. Rappresentazione Grafica della Sezione</h2>
+            <p>La seguente figura mostra uno schema rappresentativo di una sezione composta tipica (pilone da ponte) analizzata con l'applicazione:</p>
+            
+            <div class="svg-container">
+                <h4>Schema sezione composta in acciaio</h4>
+                <svg width="500" height="400" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Sfondo -->
+                    <rect x="0" y="0" width="500" height="400" fill="#f8f9fa"/>
+                    
+                    <!-- Assi di riferimento -->
+                    <line x1="250" y1="20" x2="250" y2="380" stroke="#dee2e6" stroke-width="1" stroke-dasharray="5,5"/>
+                    <line x1="20" y1="200" x2="480" y2="200" stroke="#dee2e6" stroke-width="1" stroke-dasharray="5,5"/>
+                    
+                    <!-- Lamiera inferiore -->
+                    <rect x="80" y="250" width="340" height="15" fill="#5d6d7e" stroke="#2c3e50" stroke-width="2" rx="2"/>
+                    <text x="250" y="240" text-anchor="middle" fill="#2c3e50" font-size="11" font-family="Segoe UI">Lamiera inferiore</text>
+                    
+                    <!-- Lamiera superiore -->
+                    <rect x="80" y="135" width="340" height="15" fill="#5d6d7e" stroke="#2c3e50" stroke-width="2" rx="2"/>
+                    <text x="250" y="130" text-anchor="middle" fill="#2c3e50" font-size="11" font-family="Segoe UI">Lamiera superiore</text>
+                    
+                    <!-- Anima sinistra -->
+                    <rect x="100" y="150" width="18" height="100" fill="#5d6d7e" stroke="#2c3e50" stroke-width="2" rx="2"/>
+                    
+                    <!-- Anima centrale -->
+                    <rect x="241" y="150" width="18" height="100" fill="#5d6d7e" stroke="#2c3e50" stroke-width="2" rx="2"/>
+                    
+                    <!-- Anima destra -->
+                    <rect x="382" y="150" width="18" height="100" fill="#5d6d7e" stroke="#2c3e50" stroke-width="2" rx="2"/>
+                    
+                    <!-- Irrigidimenti verticali -->
+                    <line x1="140" y1="135" x2="140" y2="250" stroke="#34495e" stroke-width="3"/>
+                    <line x1="190" y1="135" x2="190" y2="250" stroke="#34495e" stroke-width="3"/>
+                    <line x1="310" y1="135" x2="310" y2="250" stroke="#34495e" stroke-width="3"/>
+                    <line x1="360" y1="135" x2="360" y2="250" stroke="#34495e" stroke-width="3"/>
+                    
+                    <!-- Centro geometrico -->
+                    <circle cx="250" cy="200" r="6" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+                    <text x="265" y="205" text-anchor="start" fill="#e74c3c" font-size="10" font-weight="bold">G</text>
+                    
+                    <!-- Centro di taglio -->
+                    <circle cx="250" cy="185" r="4" fill="#2980b9" stroke="#1a5276" stroke-width="1.5"/>
+                    <text x="240" y="175" text-anchor="end" fill="#2980b9" font-size="9" font-weight="bold">Sc</text>
+                    
+                    <!-- Dimensioni -->
+                    <line x1="80" y1="380" x2="420" y2="380" stroke="#6c757d" stroke-width="1.5"/>
+                    <line x1="80" y1="375" x2="80" y2="385" stroke="#6c757d" stroke-width="1.5"/>
+                    <line x1="420" y1="375" x2="420" y2="385" stroke="#6c757d" stroke-width="1.5"/>
+                    <text x="250" y="395" text-anchor="middle" fill="#6c757d" font-size="10">b = 340 mm</text>
+                    
+                    <line x1="460" y1="135" x2="460" y2="265" stroke="#6c757d" stroke-width="1.5"/>
+                    <line x1="455" y1="135" x2="465" y2="135" stroke="#6c757d" stroke-width="1.5"/>
+                    <line x1="455" y1="265" x2="465" y2="265" stroke="#6c757d" stroke-width="1.5"/>
+                    <text x="475" y="200" text-anchor="start" fill="#6c757d" font-size="10">h = 130 mm</text>
+                    
+                    <!-- Legenda -->
+                    <rect x="30" y="30" width="15" height="15" fill="#5d6d7e" stroke="#2c3e50" stroke-width="1"/>
+                    <text x="50" y="42" fill="#212529" font-size="9">Acciaio strutturale</text>
+                    
+                    <circle cx="37.5" cy="75" r="5" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+                    <text x="50" y="78" fill="#212529" font-size="9">Centro geometrico G</text>
+                    
+                    <circle cx="37.5" cy="100" r="4" fill="#2980b9" stroke="#1a5276" stroke-width="1"/>
+                    <text x="50" y="103" fill="#212529" font-size="9">Centro di taglio Sc</text>
+                </svg>
+                <p class="svg-note">Figura 1: Rappresentazione schematica di una sezione composta da ponte tipo "pilone" conanime e irrigidimenti.</p>
+            </div>
+            
+            <div class="svg-container">
+                <h4>Flusso delle verifiche</h4>
+                <svg width="450" height="280" viewBox="0 0 450 280" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0" y="0" width="450" height="280" fill="#ffffff"/>
+                    
+                    <!-- Box Input -->
+                    <rect x="25" y="30" width="120" height="50" fill="#e8f4f8" stroke="#2980b9" stroke-width="2" rx="5"/>
+                    <text x="85" y="55" text-anchor="middle" fill="#1a3a5c" font-size="11" font-weight="600">INPUT</text>
+                    <text x="85" y="70" text-anchor="middle" fill="#6c757d" font-size="9">File DXF + Carichi</text>
+                    
+                    <!-- Freccia 1 -->
+                    <line x1="145" y1="55" x2="165" y2="55" stroke="#2980b9" stroke-width="2"/>
+                    <polygon points="165,50 165,60 175,55" fill="#2980b9"/>
+                    
+                    <!-- Box Analisi Geometrica -->
+                    <rect x="175" y="30" width="120" height="50" fill="#fef5e7" stroke="#f39c12" stroke-width="2" rx="5"/>
+                    <text x="235" y="55" text-anchor="middle" fill="#1a3a5c" font-size="11" font-weight="600">PROPRIETÀ</text>
+                    <text x="235" y="70" text-anchor="middle" fill="#6c757d" font-size="9">Geometriche</text>
+                    
+                    <!-- Freccia 2 -->
+                    <line x1="295" y1="55" x2="315" y2="55" stroke="#f39c12" stroke-width="2"/>
+                    <polygon points="315,50 315,60 325,55" fill="#f39c12"/>
+                    
+                    <!-- Box Calcolo Tensioni -->
+                    <rect x="325" y="30" width="120" height="50" fill="#e8f8f5" stroke="#27ae60" stroke-width="2" rx="5"/>
+                    <text x="385" y="55" text-anchor="middle" fill="#1a3a5c" font-size="11" font-weight="600">TENSIONI</text>
+                    <text x="385" y="70" text-anchor="middle" fill="#6c757d" font-size="9">σ, τ, σvm</text>
+                    
+                    <!-- Freccia 3 (verticale) -->
+                    <line x1="385" y1="80" x2="385" y2="110" stroke="#27ae60" stroke-width="2"/>
+                    <polygon points="380,100 390,100 385,110" fill="#27ae60"/>
+                    
+                    <!-- Box Verifica -->
+                    <rect x="325" y="110" width="120" height="50" fill="#ffffff" stroke="#e74c3c" stroke-width="2" rx="5"/>
+                    <text x="385" y="135" text-anchor="middle" fill="#1a3a5c" font-size="11" font-weight="600">VERIFICA</text>
+                    <text x="385" y="150" text-anchor="middle" fill="#6c757d" font-size="9">σvm / fyd</text>
+                    
+                    <!-- Freccia 4 -->
+                    <line x1="385" y1="175" x2="445" y2="175" stroke="#dee2e6" stroke-width="2"/>
+                    <polygon points="435,170 435,180 445,175" fill="#dee2e6"/>
+                    
+                    <!-- Box Output finale -->
+                    <rect x="25" y="200" width="120" height="50" fill="#fadbd8" stroke="#27ae60" stroke-width="2" rx="5"/>
+                    <text x="85" y="225" text-anchor="middle" fill="#1a3a5c" font-size="11" font-weight="600">ESITO</text>
+                    <text x="85" y="240" text-anchor="middle" fill="#6c757d" font-size="9">✓ / ✗</text>
+                    
+                    <!-- Frecce alternative rosse -->
+                    <line x1="385" y1="175" x2="385" y2="225" stroke="#e74c3c" stroke-width="2" stroke-dasharray="4,2"/>
+                    <polygon points="380,215 390,215 385,225" fill="#e74c3c"/>
+                    
+                    <line x1="325" y1="225" x2="265" y2="225" stroke="#e74c3c" stroke-width="2" stroke-dasharray="4,2"/>
+                    <polygon points="275,220 275,230 265,225" fill="#e74c3c"/>
+                    
+                    <!-- Loop indietro -->
+                    <rect x="175" y="200" width="80" height="40" fill="#fdebd0" stroke="#e74c3c" stroke-width="2" rx="5"/>
+                    <text x="215" y="220" text-anchor="middle" fill="#1a3a5c" font-size="10" font-weight="600">NO</text>
+                    <text x="215" y="232" text-anchor="middle" fill="#6c757d" font-size="8">Ridimensiona</text>
+                    
+                    <text x="385" y="190" text-anchor="middle" fill="#27ae60" font-size="10" font-weight="600">≤ 1.0</text>
+                    <text x="385" y="178" text-anchor="middle" fill="#e74c3c" font-size="10" font-weight="600">> 1.0</text>
+                </svg>
+                <p class="svg-note">Figura 2: Diagramma di flusso del processo di verifica.</p>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p><strong>SteelSectionCheck</strong> — Documentazione tecnica v1.0</p>
+        <p>Applicazione per l'analisi e la verifica di sezioni in acciaio</p>
+        <p>La presente documentazione ha carattere tecnico-informativo. I risultati dei calcoli devono essere verificati da un ingegnere strutturale abilitato prima dell'utilizzo in progetti reali.</p>
+    </footer>
+</body>
+</html>

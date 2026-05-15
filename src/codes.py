@@ -1,5 +1,10 @@
-from sectionproperties.analysis import Section
-from sectionproperties.pre import CompoundGeometry, Geometry, Material
+try:
+    from sectionproperties.analysis import Section
+    from sectionproperties.pre import Geometry, Material
+except ImportError:  # pragma: no cover - handled at runtime in the Streamlit UI
+    Section = None
+    Geometry = None
+    Material = None
 import os
 import matplotlib.pyplot as plt
 from pathlib import Path
@@ -23,6 +28,11 @@ def elenca_files_cartella(path_cartella,  typeFile = None):
     return elenco_files
 
 def importSection(dxfFile, rotate = 0):
+    if Geometry is None:
+        raise RuntimeError(
+            "La libreria sectionproperties non e' disponibile. "
+            "Installa le dipendenze per importare sezioni DXF."
+        )
     
     dictGeom = {}
     for idxf in dxfFile:
@@ -37,6 +47,11 @@ def importSection(dxfFile, rotate = 0):
     return dictGeom
 
 def assMat(dictGeom, name = "Steel", E = 210e3, v=0.3, rho=7.85e-6, fy=250):
+    if Material is None:
+        raise RuntimeError(
+            "La libreria sectionproperties non e' disponibile. "
+            "Installa le dipendenze per assegnare i materiali."
+        )
     
     material = Material(
     name=name,
@@ -53,6 +68,11 @@ def assMat(dictGeom, name = "Steel", E = 210e3, v=0.3, rho=7.85e-6, fy=250):
     return dictGeom
 
 def calcPro(dictGeom):
+    if Section is None:
+        raise RuntimeError(
+            "La libreria sectionproperties non e' disponibile. "
+            "Installa le dipendenze per calcolare le proprieta' da DXF."
+        )
     dictionaryProp = {} #ASSEGNARE UNA DICTIONARY 
     
     for ilist in dictGeom:
